@@ -52,6 +52,7 @@ int main()
                     std::cout << "Email Address: ";
                     std::cin >> email;
                     mobile_connections.emplace_back(name, pincode, aadhaar, email, "PR");
+                    std::cout << "Connection request submitted successfully"; << std::endl;
                     break;
 
                 case 2:
@@ -68,6 +69,7 @@ int main()
                     std::cout << "Enter your phone number: ";
                     std::cin >> phone_no;
                     mobile_connections.emplace_back(name, pincode, aadhaar, email, "PR", phone_no);
+                    std::cout << "Connection request submitted successfully"; << std::endl;
                     break;
 
                 default:
@@ -95,6 +97,7 @@ int main()
                     std::cout << "Email Address: ";
                     std::cin >> email;
                     mobile_connections.emplace_back(name, pincode, aadhaar, email, "PO");
+                    std::cout << "Connection request submitted successfully"; << std::endl;
                     break;
 
                 case 2:
@@ -111,6 +114,7 @@ int main()
                     std::cout << "Enter your phone number: ";
                     std::cin >> phone_no;
                     mobile_connections.emplace_back(name, pincode, aadhaar, email, "PO", phone_no);
+                    std::cout << "Connection request submitted successfully"; << std::endl;
                     break;
 
                 default:
