@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Mobile.h" 
+#include "Mobile.h"
 
 int Mobile::no_of_connections_requests = 0;
 
@@ -9,7 +9,7 @@ Mobile::Mobile(std::string name, unsigned int pincode, std::string aadhaar_no, s
     no_of_connections_requests++;
 }
 
-Mobile::Mobile(std::string name,unsigned int pincode,std::string aadhaar_no,std::string email,std::string_view connection_type,std::string mobile_no) : Customer(name,pincode,aadhaar_no,email), connection_type(connection_type), mobile_no(mobile_no), status("Pending"), type("PI"), iccid("")
+Mobile::Mobile(std::string name, unsigned int pincode, std::string aadhaar_no, std::string email, std::string_view connection_type, std::string mobile_no) : Customer(name, pincode, aadhaar_no, email), connection_type(connection_type), mobile_no(mobile_no), status("Pending"), type("PI"), iccid("")
 {
     verify_no();
     verify_upc();
@@ -24,14 +24,14 @@ std::string Mobile::get_status() const
 
 void Mobile::set_status(std::string s)
 {
-    status=s;
+    status = s;
 }
 
 void Mobile::verify_no()
 {
-    std::cout<<"Enter the OTP sent to "<<mobile_no<<": ";
-    std::cin>>otp;
-    std::cout<<"Verified Successfully"<<std::endl;
+    std::cout << "Enter the OTP sent to " << mobile_no << ": ";
+    std::cin >> otp;
+    std::cout << "Verified Successfully" << std::endl;
 }
 
 void Mobile::generate_crn()
@@ -54,49 +54,49 @@ void Mobile::verify_upc()
     int check = 0;
 UPC_VERIF:
 
-    std::cout<<"Enter your UPC Code: ";
-    std::cin>>upc;
-    std::cout<<"Current Operator: ";
-    switch(upc[0])
+    std::cout << "Enter your UPC Code: ";
+    std::cin >> upc;
+    std::cout << "Current Operator: ";
+    switch (upc[0])
     {
     case 'V':
 
-        std::cout<<"Vodafone Idea\n"<<std::endl;
+        std::cout << "Vodafone Idea\n"
+                  << std::endl;
         break;
 
     case 'G':
 
-        std::cout<<"Reliance Jio\n"<<std::endl;
+        std::cout << "Reliance Jio\n"
+                  << std::endl;
         break;
 
     case 'A':
 
-        std::cout<<"Airtel\n"<<std::endl;
+        std::cout << "Airtel\n"
+                  << std::endl;
         break;
 
     case 'B':
 
-        std::cout<<"BSNL\n"<<std::endl;
+        std::cout << "BSNL\n"
+                  << std::endl;
         break;
 
     case 'M':
 
-        std::cout<<"MTNL"<<std::endl;
+        std::cout << "MTNL" << std::endl;
         break;
 
     default:
 
-        if(check == 1)
+        if (check == 1)
         {
-            std::cout<<"Invalid UPC code!"<<std::endl;
-            status="Rejected";
-            reason="Invalid UPC code";
+            throw "Rejected! Invalid UPC code";
             return;
         }
-        std::cout<<"Invalid UPC code\nTry again"<<std::endl;
+        std::cout << "Invalid UPC code\nTry again" << std::endl;
         check++;
         goto UPC_VERIF;
-
     }
 }
-
