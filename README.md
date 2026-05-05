@@ -58,7 +58,7 @@ The CRN is the primary key used by the provisioner to locate and activate a requ
 | View Rejected Requests | Lists rejected requests with their rejection reason |
 | View Provisioned Requests | Lists activated connections with their ICCID |
 | Provision a Request | Select a CRN, assign an ICCID, and mark the connection as Provisioned |
-| Mobile Number Assignment | For port-in requests, a new mobile number is algorithmically generated on provisioning |
+| Mobile Number Assignment | For new connection requests, a new mobile number is algorithmically generated on provisioning |
 
 ---
 
