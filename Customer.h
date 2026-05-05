@@ -2,8 +2,7 @@
 
 class Customer
 {
-    protected:
-
+protected:
     std::string name;
     unsigned int pincode;
     std::string aadhaar_no;
@@ -11,11 +10,9 @@ class Customer
     std::string status;
     int otp;
 
-    public:
+public:
+    Customer(std::string name, unsigned int pincode, std::string aadhaar_no, std::string email);
 
-    Customer(std::string name,unsigned int pincode,std::string aadhaar_no,std::string email);
-
-    private:
-
+private:
     void verify_email();
 };
