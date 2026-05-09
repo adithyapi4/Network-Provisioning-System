@@ -103,13 +103,6 @@ g++ -std=c++17 Customer.cpp Mobile.cpp main.cpp -o airconnect
 ./airconnect
 ```
 
-Or use the single-file version:
-
-```bash
-g++ -std=c++17 network_provisioning.cpp -o airconnect
-./airconnect
-```
-
 ---
 
 ## Workflow Overview
