@@ -16,7 +16,7 @@ int main()
     std::string crn;
     while (1)
     {
-        std::cout << "--------AirConnect Provisioning and Allotment System--------\n\n";
+        std::cout << "--------AirConnect Provisioning System--------\n\n";
         std::cout << "1. Customer\n";
         std::cout << "2. Provisioner\n";
         std::cout << "3. Exit\n";
