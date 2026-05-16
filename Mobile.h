@@ -28,7 +28,7 @@ public:
     std::string get_status() const;
     void set_status(std::string_view s);
     std::string get_crn() const;
-    std::string Mobile::get_reason() const;
+    std::string get_reason() const;
     void set_reason(std::string_view r);
     void display_no() const;
 };
