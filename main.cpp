@@ -14,7 +14,7 @@ int main()
     std::vector<Mobile> mobile_connections;
     Payment *pay{};
     bool paid{};
-    bool search{false};
+    bool search{};
     std::string crn;
     unsigned int option;
 
@@ -60,16 +60,16 @@ int main()
                             paid = make_payment(pay);
                             if (paid == false)
                             {
-                                std::cout << "Transaction Failed! Your request will be submitted only upon successful payment\n";
-                                std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
-                                std::cout << "You can retry the payment using the given CRN" << std::endl;
-                                mobile_connections.back().set_reason("Payment failed");
+                                payment_failure_message(mobile_connections);
                             }
-                            std::cout << "Connection request placed successfully!\n";
-                            std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
-                            std::cout << "To track your connection request use the given CRN" << std::endl;
+                            else
+                            {
+                                payment_success_message(mobile_connections);
+                            }
                             delete pay;
+                            pay = nullptr;
                             delete new_customer;
+                            new_customer = nullptr;
                             break;
 
                         case 2:
@@ -77,21 +77,23 @@ int main()
                             paid = make_payment(pay);
                             if (paid == false)
                             {
-                                std::cout << "Transaction Failed! Your request will be submitted only upon successful payment\n";
-                                std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
-                                std::cout << "You can retry the payment using the given CRN" << std::endl;
-                                mobile_connections.back().set_reason("Payment failed");
+                                payment_failure_message(mobile_connections);
                             }
-                            std::cout << "Connection request placed successfully!\n";
-                            std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
-                            std::cout << "To track your connection request use the given CRN" << std::endl;
+                            else
+                            {
+                                payment_success_message(mobile_connections);
+                            }
                             delete pay;
+                            pay = nullptr;
                             delete new_customer;
+                            new_customer = nullptr;
                             break;
 
                         default:
-                            delete new_customer;
                             delete pay;
+                            pay = nullptr;
+                            delete new_customer;
+                            new_customer = nullptr;
                             std::cout << "Invalid Option" << std::endl;
                         }
                         break;
@@ -108,16 +110,16 @@ int main()
                             paid = make_payment(pay);
                             if (paid == false)
                             {
-                                std::cout << "Transaction Failed! Your request will be submitted only upon successful payment\n";
-                                std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
-                                std::cout << "You can retry the payment using the given CRN" << std::endl;
-                                mobile_connections.back().set_reason("Payment failed");
+                                payment_failure_message(mobile_connections);
                             }
-                            std::cout << "Connection request placed successfully!\n";
-                            std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
-                            std::cout << "To track your connection request use the given CRN" << std::endl;
+                            else
+                            {
+                                payment_success_message(mobile_connections);
+                            }
                             delete pay;
+                            pay = nullptr;
                             delete new_customer;
+                            new_customer = nullptr;
                             break;
 
                         case 2:
@@ -125,28 +127,32 @@ int main()
                             paid = make_payment(pay);
                             if (paid == false)
                             {
-                                std::cout << "Transaction Failed! Your request will be submitted only upon successful payment\n";
-                                std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
-                                std::cout << "You can retry the payment using the given CRN" << std::endl;
-                                mobile_connections.back().set_reason("Payment failed");
+                                payment_failure_message(mobile_connections);
                             }
-                            std::cout << "Connection request placed successfully!\n";
-                            std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
-                            std::cout << "To track your connection request use the given CRN" << std::endl;
+                            else
+                            {
+                                payment_success_message(mobile_connections);
+                            }
                             delete pay;
+                            pay = nullptr;
                             delete new_customer;
+                            new_customer = nullptr;
                             break;
 
                         default:
-                            delete new_customer;
                             delete pay;
+                            pay = nullptr;
+                            delete new_customer;
+                            new_customer = nullptr;
                             std::cout << "Invalid option!" << std::endl;
                         }
                         break;
 
                     default:
-                        delete new_customer;
                         delete pay;
+                        pay = nullptr;
+                        delete new_customer;
+                        new_customer = nullptr;
                         std::cout << "Invalid option!" << std::endl;
                     }
                     break;
@@ -155,16 +161,18 @@ int main()
                     std::cout << "Enter your CRN: ";
                     std::cin >> crn;
 
+                    search = false;
                     for (Mobile &connection : mobile_connections)
                     {
                         if (connection.get_crn() == crn)
                         {
+                            search = true;
                             std::cout << "Status: " << connection.get_status() << std::endl;
                             if (connection.get_status() == "Provisioned")
                             {
                                 connection.display_no();
                             }
-                            else if ((connection.get_status() == "Pending") && (connection.get_reason() == "Payment"))
+                            else if ((connection.get_status() == "Pending") && (connection.get_reason() == "Payment failed"))
                             {
                                 char option{};
                                 std::cout << "Payment not yet done!" << std::endl;
@@ -180,6 +188,7 @@ int main()
                                     std::cout << "Connection request placed successfully!\n";
                                     connection.set_reason("");
                                     delete pay;
+                                    pay = nullptr;
                                 }
                                 else if (option == 'N' || option == 'n')
                                 {
@@ -196,6 +205,10 @@ int main()
                                 std::cout << "Reason: " << connection.get_reason() << std::endl;
                             }
                         }
+                    }
+                    if (search == true)
+                    {
+                        std::cout << "Invalid CRN!" << std::endl;
                     }
                     break;
 
@@ -232,6 +245,7 @@ int main()
                             }
                             std::cout << "Enter the CRN you want to provision/reject: ";
                             std::cin >> crn;
+                            search = false;
                             for (Mobile &connection : mobile_connections)
                             {
                                 if (connection.get_crn() == crn)

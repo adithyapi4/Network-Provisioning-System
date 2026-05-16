@@ -29,7 +29,7 @@ void mobile_provisioning(Mobile &connection)
 
     connection.iccid = iccid;
 
-    if (connection.mobile_no != "")
+    if (connection.mobile_no == "")
     {
         connection.generate_mobile_no();
     }
@@ -49,7 +49,7 @@ std::ostream &operator<<(std::ostream &out, const Mobile &sr)
     }
     else if (sr.status == "Provisioned")
     {
-        std::cout << sr.crn << "\t\t" << sr.iccid << std::endl;
+        out << sr.crn << "\t\t" << sr.iccid << std::endl;
     }
 
     return out;
@@ -133,4 +133,19 @@ bool make_payment(Payment *&pay)
         std::cout << "Invalid choice!";
         return false;
     }
+}
+
+void payment_failure_message(std::vector<Mobile> &mobile_connections)
+{
+    std::cout << "Transaction Failed! Your request will be submitted only upon successful payment\n";
+    std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
+    std::cout << "You can retry the payment using the given CRN" << std::endl;
+    mobile_connections.back().set_reason("Payment failed");
+}
+
+void payment_success_message(std::vector<Mobile> &mobile_connections)
+{
+    std::cout << "Connection request placed successfully!\n";
+    std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
+    std::cout << "To track your connection request use the given CRN" << std::endl;
 }

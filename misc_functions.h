@@ -9,5 +9,7 @@ void port_in_prepaid(Customer &new_customer, std::vector<Mobile> &mobile_connect
 void new_connection_postpaid(Customer &new_customer, std::vector<Mobile> &mobile_connections);
 void port_in_postpaid(Customer &new_customer, std::vector<Mobile> &mobile_connections);
 bool make_payment(Payment *&pay);
+void payment_failure_message(std::vector<Mobile> &mobile_connections);
+void payment_success_message(std::vector<Mobile> &mobile_connections);
 
 #endif
