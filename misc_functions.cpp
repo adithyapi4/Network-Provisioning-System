@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "misc-functions.h"
+#include "misc_functions.h"
 #include "Payment.h"
 #include "Card.h"
 #include "Customer.h"

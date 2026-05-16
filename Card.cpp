@@ -4,6 +4,7 @@
 #include <ctime>
 #include <iomanip>
 #include <thread>
+#include "Payment.h"
 #include "Card.h"
 
 void Card::get_payment_details()
