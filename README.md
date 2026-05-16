@@ -97,7 +97,7 @@ Customer  (base)
 
 ```bash
 # Compile
-g++ -std=c++17 Customer.cpp Mobile.cpp main.cpp -o airconnect
+g++ -std=c++17 *.cpp -o airconnect
 
 # Run
 ./airconnect
