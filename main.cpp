@@ -33,16 +33,17 @@ int main()
             switch (option)
             {
             case 1:
-                std::cout << "1. New connection request\n";
+                std::cout << "\n1. New connection request\n";
                 std::cout << "2. Track exisitng connection request\n";
                 std::cin >> option;
+                std::cout << std::endl;
 
                 switch (option)
                 {
                 case 1:
 
                     get_customer_details(new_customer);
-                    std::cout << "Choose a connection type: \n";
+                    std::cout << "\nChoose a connection type: \n";
                     std::cout << "1. Prepaid\n";
                     std::cout << "2. Postpaid\n";
                     std::cin >> option;
@@ -50,9 +51,10 @@ int main()
                     switch (option)
                     {
                     case 1:
-                        std::cout << "1. New Number\n";
+                        std::cout << "\n1. New Number\n";
                         std::cout << "2. Port In\n";
                         std::cin >> option;
+                        std::cout << std::endl;
 
                         switch (option)
                         {
@@ -86,9 +88,10 @@ int main()
                         break;
 
                     case 2:
-                        std::cout << "1. New Number\n";
+                        std::cout << "\n1. New Number\n";
                         std::cout << "2. Port In\n";
                         std::cin >> option;
+                        std::cout << std::endl;
 
                         switch (option)
                         {
@@ -205,6 +208,7 @@ int main()
                         std::cout << "3. View Provisioned Requests\n";
                         std::cout << "4. Exit\n";
                         std::cin >> option;
+                        std::cout << std::endl;
 
                         if (option == 4)
                         {
@@ -233,6 +237,7 @@ int main()
                                     std::cout << "1. Provision\n";
                                     std::cout << "2. Reject\n";
                                     std::cin >> option;
+                                    std::cout << std::endl;
 
                                     switch (option)
                                     {
