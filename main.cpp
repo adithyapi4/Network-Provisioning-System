@@ -14,6 +14,7 @@ int main()
     std::vector<Mobile> mobile_connections;
     Payment *pay{};
     bool paid{};
+    bool search{false};
     std::string crn;
     unsigned int option;
 
@@ -222,7 +223,6 @@ int main()
                         switch (option)
                         {
                         case 1:
-                            bool search{false};
                             for (const Mobile &connection : mobile_connections)
                             {
                                 if ((connection.get_status() == "Pending") && (connection.get_reason() != "Payment failed"))
