@@ -27,6 +27,7 @@ int main()
         std::cin >> option;
         if (option == 3)
             return 0;
+
         try
         {
             switch (option)
@@ -174,23 +175,26 @@ int main()
                             }
                             else if ((connection.get_status() == "Pending") && (connection.get_reason() == "Payment failed"))
                             {
-                                char option{};
+                                char p_option{};
                                 std::cout << "Payment not yet done!" << std::endl;
                                 std::cout << "Do you want to retry payment? (Y/N)";
-                                std::cin >> option;
-                                if (option == 'Y' || option == 'y')
+                                std::cin >> p_option;
+                                if (p_option == 'Y' || p_option == 'y')
                                 {
                                     paid = make_payment(pay);
                                     if (paid == false)
                                     {
                                         std::cout << "Transaction Failed! Your request will be submitted only upon successful payment\n";
                                     }
-                                    std::cout << "Connection request placed successfully!\n";
-                                    connection.set_reason("");
+                                    else
+                                    {
+                                        std::cout << "Connection request placed successfully!\n";
+                                        connection.set_reason("");
+                                    }
                                     delete pay;
                                     pay = nullptr;
                                 }
-                                else if (option == 'N' || option == 'n')
+                                else if (p_option == 'N' || p_option == 'n')
                                 {
                                     break;
                                 }
@@ -206,7 +210,7 @@ int main()
                             }
                         }
                     }
-                    if (search == true)
+                    if (search == false)
                     {
                         std::cout << "Invalid CRN!" << std::endl;
                     }
