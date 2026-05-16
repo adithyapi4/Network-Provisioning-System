@@ -125,7 +125,6 @@ UPC_VERIF:
         if (check == 1)
         {
             throw "Rejected! Invalid UPC code";
-            return;
         }
         std::cout << "Invalid UPC code\nTry again" << std::endl;
         check++;
