@@ -9,9 +9,10 @@ class Card : public Payment
     unsigned int cvv{};
     bool validity{false};
 
-public:
-        void get_payment_details() override;
     void validate_card_details();
+
+public:
+    void get_payment_details() override;
     bool make_payment() override;
 };
 

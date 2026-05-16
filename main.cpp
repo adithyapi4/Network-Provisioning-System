@@ -59,14 +59,7 @@ int main()
                         case 1:
                             new_connection_prepaid(*new_customer, mobile_connections);
                             paid = make_payment(pay);
-                            if (paid == false)
-                            {
-                                payment_failure_message(mobile_connections);
-                            }
-                            else
-                            {
-                                payment_success_message(mobile_connections);
-                            }
+                            paid ? payment_success_message : payment_failure_message;
                             delete pay;
                             pay = nullptr;
                             delete new_customer;
@@ -76,14 +69,7 @@ int main()
                         case 2:
                             port_in_prepaid(*new_customer, mobile_connections);
                             paid = make_payment(pay);
-                            if (paid == false)
-                            {
-                                payment_failure_message(mobile_connections);
-                            }
-                            else
-                            {
-                                payment_success_message(mobile_connections);
-                            }
+                            paid ? payment_success_message : payment_failure_message;
                             delete pay;
                             pay = nullptr;
                             delete new_customer;
@@ -109,14 +95,7 @@ int main()
                         case 1:
                             new_connection_postpaid(*new_customer, mobile_connections);
                             paid = make_payment(pay);
-                            if (paid == false)
-                            {
-                                payment_failure_message(mobile_connections);
-                            }
-                            else
-                            {
-                                payment_success_message(mobile_connections);
-                            }
+                            paid ? payment_success_message : payment_failure_message;
                             delete pay;
                             pay = nullptr;
                             delete new_customer;
@@ -126,14 +105,7 @@ int main()
                         case 2:
                             port_in_postpaid(*new_customer, mobile_connections);
                             paid = make_payment(pay);
-                            if (paid == false)
-                            {
-                                payment_failure_message(mobile_connections);
-                            }
-                            else
-                            {
-                                payment_success_message(mobile_connections);
-                            }
+                            paid ? payment_success_message : payment_failure_message;
                             delete pay;
                             pay = nullptr;
                             delete new_customer;
@@ -175,11 +147,11 @@ int main()
                             }
                             else if ((connection.get_status() == "Pending") && (connection.get_reason() == "Payment failed"))
                             {
-                                char p_option{};
+                                char option{};
                                 std::cout << "Payment not yet done!" << std::endl;
                                 std::cout << "Do you want to retry payment? (Y/N)";
-                                std::cin >> p_option;
-                                if (p_option == 'Y' || p_option == 'y')
+                                std::cin >> option;
+                                if (option == 'Y' || option == 'y')
                                 {
                                     paid = make_payment(pay);
                                     if (paid == false)
@@ -194,7 +166,7 @@ int main()
                                     delete pay;
                                     pay = nullptr;
                                 }
-                                else if (p_option == 'N' || p_option == 'n')
+                                else if (option == 'N' || option == 'n')
                                 {
                                     break;
                                 }
@@ -226,6 +198,8 @@ int main()
                 {
                     while (1)
                     {
+                        Mobile::display_stats();
+                        std::cout << "----------------------------------\n";
                         std::cout << "1. View Pending Requests\n";
                         std::cout << "2. View Rejected Requests\n";
                         std::cout << "3. View Provisioned Requests\n";

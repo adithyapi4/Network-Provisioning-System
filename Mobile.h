@@ -3,7 +3,11 @@
 
 class Mobile : public Customer
 {
-    static int no_of_connections_requests;
+    static unsigned int total_no_of_connections_requests;
+    static unsigned int no_of_pending_requests;
+    static unsigned int no_of_provisioned_requests;
+    static unsigned int no_of_rejected_requests;
+
     std::string type{};
     std::string connection_type{};
     std::string mobile_no{};
@@ -31,6 +35,7 @@ public:
     std::string get_reason() const;
     void set_reason(std::string_view r);
     void display_no() const;
+    static void display_stats();
 };
 
 #endif

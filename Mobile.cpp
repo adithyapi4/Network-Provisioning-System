@@ -5,12 +5,16 @@
 #include "Mobile.h"
 #include "Payment.h"
 
-int Mobile::no_of_connections_requests = 0;
+unsigned int Mobile::total_no_of_connections_requests = 0;
+unsigned int Mobile::no_of_pending_requests = 0;
+unsigned int Mobile::no_of_provisioned_requests = 0;
+unsigned int Mobile::no_of_rejected_requests = 0;
 
 Mobile::Mobile(Customer &customer_info, std::string_view connection_type) : Customer(customer_info), type("NE"), connection_type(connection_type), status("Pending")
 {
     generate_crn();
-    no_of_connections_requests++;
+    total_no_of_connections_requests++;
+    no_of_pending_requests++;
 }
 
 Mobile::Mobile(Customer &customer_info, std::string_view connection_type, std::string mobile_no) : Customer(customer_info), type("PI"), connection_type(connection_type), mobile_no(mobile_no), status("Pending")
@@ -18,7 +22,8 @@ Mobile::Mobile(Customer &customer_info, std::string_view connection_type, std::s
     verify_no();
     verify_upc();
     generate_crn();
-    no_of_connections_requests++;
+    total_no_of_connections_requests++;
+    no_of_pending_requests++;
 }
 
 std::string Mobile::get_status() const
@@ -66,6 +71,14 @@ void Mobile::generate_mobile_no()
 void Mobile::display_no() const
 {
     std::cout << "Mobile Number: " << mobile_no << std::endl;
+}
+
+void Mobile::display_stats()
+{
+    std::cout << "Total number of connection requests: " << total_no_of_connections_requests;
+    std::cout << "\nNumber of pending connection requests: " << no_of_pending_requests;
+    std::cout << "\nNumber of provisioned connection requests: " << no_of_provisioned_requests;
+    std::cout << "\nNumber of rejected connection requests: " << no_of_rejected_requests << std::endl;
 }
 
 void Mobile::verify_upc()
