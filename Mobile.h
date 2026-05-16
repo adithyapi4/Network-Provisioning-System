@@ -32,8 +32,6 @@ class Mobile : public Customer
 
     void set_status(std::string s);
 
-    void display_details() const;
-
     std::string get_crn() const;
 };
 
