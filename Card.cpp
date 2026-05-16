@@ -27,8 +27,8 @@ void Card::validate_card_details()
     auto now = std::chrono::system_clock::now();
     std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
     std::tm *localTime = std::localtime(&currentTime);
-    unsigned int MM = localTime->tm_mon + 1;
-    unsigned int YY = (localTime->tm_year + 1900) % 100;
+    int MM = localTime->tm_mon + 1;
+    int YY = (localTime->tm_year + 1900) % 100;
 
     if ((card_no.length() > 19) || (card_no.length() < 12))
     {
@@ -74,7 +74,7 @@ void Card::validate_card_details()
         int digit = (c - '0');
         if (!((digit >= 0) && (digit <= 9)))
         {
-            validity = false;      
+            validity = false;
         }
         card_no_int[i++] = digit;
     }

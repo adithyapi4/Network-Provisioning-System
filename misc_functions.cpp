@@ -55,7 +55,7 @@ std::ostream &operator<<(std::ostream &out, const Mobile &sr)
     return out;
 }
 
-void get_customer_details(Customer* new_customer)
+void get_customer_details(Customer *&new_customer)
 {
     std::string name;
     unsigned int pincode;
@@ -72,15 +72,15 @@ void get_customer_details(Customer* new_customer)
     std::cout << "Email Address: ";
     std::cin >> email;
 
-    new_customer = new Customer(name,pincode,aadhaar,email);
+    new_customer = new Customer(name, pincode, aadhaar, email);
 }
 
-void new_connection_prepaid(Customer& new_customer,std::vector<Mobile>& mobile_connections)
+void new_connection_prepaid(Customer &new_customer, std::vector<Mobile> &mobile_connections)
 {
     mobile_connections.emplace_back(new_customer, "PR");
 }
 
-void port_in_prepaid(Customer& new_customer,std::vector<Mobile>& mobile_connections)
+void port_in_prepaid(Customer &new_customer, std::vector<Mobile> &mobile_connections)
 {
     std::string phone_no;
 
@@ -90,47 +90,47 @@ void port_in_prepaid(Customer& new_customer,std::vector<Mobile>& mobile_connecti
     mobile_connections.emplace_back(new_customer, "PR", phone_no);
 }
 
-void new_connection_postpaid(Customer& new_customer,std::vector<Mobile>& mobile_connections)
+void new_connection_postpaid(Customer &new_customer, std::vector<Mobile> &mobile_connections)
 {
     mobile_connections.emplace_back(new_customer, "PO");
 }
 
-void port_in_postpaid(Customer& new_customer,std::vector<Mobile>& mobile_connections)
+void port_in_postpaid(Customer &new_customer, std::vector<Mobile> &mobile_connections)
 {
     std::string phone_no;
 
     std::cout << "Enter your phone number: ";
     std::cin >> phone_no;
 
-    mobile_connections.emplace_back(new_customer, "PR", phone_no);
+    mobile_connections.emplace_back(new_customer, "PO", phone_no);
 }
 
-bool make_payment(Payment* pay)
+bool make_payment(Payment *&pay)
 {
     unsigned int option{};
-    std::cout<<"Please pay Rs.299 to place the connection request\n";
-    std::cout<<"Choose your preferred payment method: \n";
-    std::cout<<"1. Credit/Debit Card\n";
-    std::cin>>option;
+    std::cout << "Please pay Rs.299 to place the connection request\n";
+    std::cout << "Choose your preferred payment method: \n";
+    std::cout << "1. Credit/Debit Card\n";
+    std::cin >> option;
 
     switch (option)
     {
-        case 1:
-            pay = new Card;
-            pay->get_payment_details();
-            if(pay->make_payment() == false)
-            {
-                std::cout<<"Invalid card details";
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-            break;
-
-        default:
-            std::cout<<"Invalid choice!";
+    case 1:
+        pay = new Card;
+        pay->get_payment_details();
+        if (pay->make_payment() == false)
+        {
+            std::cout << "Invalid card details";
             return false;
+        }
+        else
+        {
+            return true;
+        }
+        break;
+
+    default:
+        std::cout << "Invalid choice!";
+        return false;
     }
 }

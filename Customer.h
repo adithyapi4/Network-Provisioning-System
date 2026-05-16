@@ -11,7 +11,6 @@ protected:
     int otp{};
 
 public:
-
     Customer(std::string name, unsigned int pincode, std::string aadhaar_no, std::string email);
 
 private:

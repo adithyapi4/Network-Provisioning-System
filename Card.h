@@ -10,8 +10,7 @@ class Card : public Payment
     bool validity{false};
 
 public:
-    
-    void get_payment_details() override;
+        void get_payment_details() override;
     void validate_card_details();
     bool make_payment() override;
 };

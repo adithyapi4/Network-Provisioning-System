@@ -7,13 +7,13 @@
 
 int Mobile::no_of_connections_requests = 0;
 
-Mobile::Mobile(Customer& customer_info, std::string_view connection_type) : Customer(customer_info), connection_type(connection_type), status("Pending"), type("NE")
+Mobile::Mobile(Customer &customer_info, std::string_view connection_type) : Customer(customer_info), type("NE"), connection_type(connection_type), status("Pending")
 {
     generate_crn();
     no_of_connections_requests++;
 }
 
-Mobile::Mobile(Customer& customer_info, std::string_view connection_type, std::string mobile_no) : Customer(customer_info), connection_type(connection_type), mobile_no(mobile_no), status("Pending"), type("PI")
+Mobile::Mobile(Customer &customer_info, std::string_view connection_type, std::string mobile_no) : Customer(customer_info), type("PI"), connection_type(connection_type), mobile_no(mobile_no), status("Pending")
 {
     verify_no();
     verify_upc();
@@ -26,9 +26,19 @@ std::string Mobile::get_status() const
     return status;
 }
 
-void Mobile::set_status(std::string s)
+void Mobile::set_status(std::string_view s)
 {
     status = s;
+}
+
+std::string Mobile::get_reason() const
+{
+    return reason;
+}
+
+void Mobile::set_reason(std::string_view r)
+{
+    reason = r;
 }
 
 void Mobile::verify_no()
@@ -51,6 +61,11 @@ std::string Mobile::get_crn() const
 void Mobile::generate_mobile_no()
 {
     mobile_no = "93" + aadhaar_no.substr(8) + std::to_string(pincode).substr(1);
+}
+
+void Mobile::display_no() const
+{
+    std::cout << "Mobile Number: " << mobile_no << std::endl;
 }
 
 void Mobile::verify_upc()
