@@ -1,19 +1,22 @@
 #include <iostream>
+#include <string>
+#include <string_view>
 #include <vector>
+#include "Customer.h"
 #include "Mobile.h"
-
-int verify_prov_id();
+#include "Payment.h"
+#include "Card.h"
+#include "misc-functions.h"
 
 int main()
 {
+    Customer* new_customer{};
     std::vector<Mobile> mobile_connections;
-    unsigned int option;
-    std::string name;
-    unsigned int pincode;
-    std::string aadhaar;
-    std::string email;
-    std::string phone_no;
+    Payment* pay{};
+    bool paid{};
     std::string crn;
+    unsigned int option;
+
     while (1)
     {
         std::cout << "--------AirConnect Provisioning System--------\n\n";
@@ -28,6 +31,7 @@ int main()
             switch (option)
             {
             case 1:
+                get_customer_details(new_customer);
                 std::cout << "Choose a connection type: \n";
                 std::cout << "1. Prepaid\n";
                 std::cout << "2. Postpaid\n";
@@ -43,39 +47,40 @@ int main()
                     switch (option)
                     {
                     case 1:
-
-                        std::cout << "Enter the following details: " << std::endl;
-                        std::cout << "Name as per Govt ID.: ";
-                        std::getline(std::cin >> std::ws, name);
-                        std::cout << "Pincode: ";
-                        std::cin >> pincode;
-                        std::cout << "Aadhaar Number: ";
-                        std::cin >> aadhaar;
-                        std::cout << "Email Address: ";
-                        std::cin >> email;
-                        mobile_connections.emplace_back(name, pincode, aadhaar, email, "PR");
-                        std::cout << "Connection request submitted successfully" << std::endl;
+                        new_connection_prepaid(*new_customer,mobile_connections);
+                        paid = make_payment(pay);
+                        if(paid == false)
+                        {
+                            std::cout<<"Transaction Failed! Your request will be submitted upon successful payment\n";
+                            std::cout<<"CRN: "<< mobile_connections.back().get_crn() <<std::endl;
+                            std::cout<<"You can retry the payment using the given CRN!"<<std::endl;
+                        }
+                        std::cout<<"Connection request placed successfully!\n";
+                        std::cout<<"CRN: "<< mobile_connections.back().get_crn() <<std::endl;
+                        std::cout<<"To track your connection request use the given CRN!"<<std::endl;
+                        delete pay;
+                        delete new_customer;
                         break;
 
                     case 2:
-
-                        std::cout << "Enter the following details: " << std::endl;
-                        std::cout << "Name as per Govt ID.: ";
-                        std::getline(std::cin >> std::ws, name);
-                        std::cout << "Pincode: ";
-                        std::cin >> pincode;
-                        std::cout << "Aadhaar Number: ";
-                        std::cin >> aadhaar;
-                        std::cout << "Email Address: ";
-                        std::cin >> email;
-                        std::cout << "Enter your phone number: ";
-                        std::cin >> phone_no;
-                        mobile_connections.emplace_back(name, pincode, aadhaar, email, "PR", phone_no);
-                        std::cout << "Connection request submitted successfully" << std::endl;
+                        port_in_prepaid(*new_customer,mobile_connections);
+                        paid = make_payment(pay);
+                        if(paid == false)
+                        {
+                            std::cout<<"Transaction Failed! Your request will be submitted upon successful payment\n";
+                            std::cout<<"CRN: "<< mobile_connections.back().get_crn() <<std::endl;
+                            std::cout<<"You can retry the payment using the given CRN!"<<std::endl;
+                        }
+                        std::cout<<"Connection request placed successfully!\n";
+                        std::cout<<"CRN: "<< mobile_connections.back().get_crn() <<std::endl;
+                        std::cout<<"To track your connection request use the given CRN!"<<std::endl;
+                        delete pay;
+                        delete new_customer;
                         break;
 
                     default:
-
+                        delete new_customer;
+                        delete pay;
                         std::cout << "Invalid Option" << std::endl;
                     }
                     break;
@@ -88,45 +93,47 @@ int main()
                     switch (option)
                     {
                     case 1:
-
-                        std::cout << "Enter the following details: " << std::endl;
-                        std::cout << "Name as per Govt ID.: ";
-                        std::getline(std::cin >> std::ws, name);
-                        std::cout << "Pincode: ";
-                        std::cin >> pincode;
-                        std::cout << "Aadhaar Number: ";
-                        std::cin >> aadhaar;
-                        std::cout << "Email Address: ";
-                        std::cin >> email;
-                        mobile_connections.emplace_back(name, pincode, aadhaar, email, "PO");
-                        std::cout << "Connection request submitted successfully" << std::endl;
+                        new_connection_postpaid(*new_customer,mobile_connections);
+                        paid = make_payment(pay);
+                        if(paid == false)
+                        {
+                            std::cout<<"Transaction Failed! Your request will be submitted upon successful payment\n";
+                            std::cout<<"CRN: "<< mobile_connections.back().get_crn() <<std::endl;
+                            std::cout<<"You can retry the payment using the given CRN!"<<std::endl;
+                        }
+                        std::cout<<"Connection request placed successfully!\n";
+                        std::cout<<"CRN: "<< mobile_connections.back().get_crn() <<std::endl;
+                        std::cout<<"To track your connection request use the given CRN!"<<std::endl;
+                        delete pay;
+                        delete new_customer;
                         break;
 
                     case 2:
-
-                        std::cout << "Enter the following details: " << std::endl;
-                        std::cout << "Name as per Govt ID.: ";
-                        std::getline(std::cin >> std::ws, name);
-                        std::cout << "Pincode: ";
-                        std::cin >> pincode;
-                        std::cout << "Aadhaar Number: ";
-                        std::cin >> aadhaar;
-                        std::cout << "Email Address: ";
-                        std::cin >> email;
-                        std::cout << "Enter your phone number: ";
-                        std::cin >> phone_no;
-                        mobile_connections.emplace_back(name, pincode, aadhaar, email, "PO", phone_no);
-                        std::cout << "Connection request submitted successfully" << std::endl;
+                        port_in_postpaid(*new_customer,mobile_connections);
+                        paid = make_payment(pay);
+                        if(paid == false)
+                        {
+                            std::cout<<"Transaction Failed! Your request will be submitted upon successful payment\n";
+                            std::cout<<"CRN: "<< mobile_connections.back().get_crn() <<std::endl;
+                            std::cout<<"You can retry the payment using the given CRN!"<<std::endl;
+                        }
+                        std::cout<<"Connection request placed successfully!\n";
+                        std::cout<<"CRN: "<< mobile_connections.back().get_crn() <<std::endl;
+                        std::cout<<"To track your connection request use the given CRN!"<<std::endl;
+                        delete pay;
+                        delete new_customer;
                         break;
 
                     default:
-
+                        delete new_customer;
+                        delete pay;
                         std::cout << "Invalid option!" << std::endl;
-                        break;
                     }
                     break;
 
                 default:
+                    delete new_customer;
+                    delete pay;
                     std::cout << "Invalid option!" << std::endl;
                 }
                 break;
@@ -207,52 +214,4 @@ int main()
         }
     }
     return 0;
-}
-
-int verify_prov_id()
-{
-    int otp;
-    std::string prov_id;
-    std::cout << "Enter your provisioner ID: ";
-    std::cin >> prov_id;
-
-    std::cout << "Enter the OTP sent to your registered mobile number: ";
-    std::cin >> otp;
-
-    std::cout << "Validated" << std::endl;
-    return 0;
-}
-
-void mobile_provisioning(Mobile &connection)
-{
-    std::string iccid;
-    std::cout << "Enter the ICCID: ";
-    std::cin >> iccid;
-
-    connection.iccid = iccid;
-
-    if (connection.mobile_no != "")
-    {
-        connection.generate_mobile_no();
-    }
-
-    connection.status = "Provisioned";
-}
-
-std::ostream &operator<<(std::ostream &out, const Mobile &sr)
-{
-    if (sr.status == "Pending")
-    {
-        out << sr.crn << std::endl;
-    }
-    else if (sr.status == "Rejected")
-    {
-        out << sr.crn << "\t\t" << sr.reason << std::endl;
-    }
-    else if (sr.status == "Provisioned")
-    {
-        std::cout << sr.crn << "\t\t" << sr.iccid << std::endl;
-    }
-
-    return out;
 }

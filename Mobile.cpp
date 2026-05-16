@@ -1,15 +1,19 @@
 #include <iostream>
+#include <string>
+#include <string_view>
+#include "Customer.h"
 #include "Mobile.h"
+#include "Payment.h"
 
 int Mobile::no_of_connections_requests = 0;
 
-Mobile::Mobile(std::string name, unsigned int pincode, std::string aadhaar_no, std::string email, std::string_view connection_type) : Customer(name, pincode, aadhaar_no, email), connection_type(connection_type), status("Pending"), type("NE"), mobile_no(""), iccid("")
+Mobile::Mobile(Customer& customer_info, std::string_view connection_type) : Customer(customer_info), connection_type(connection_type), status("Pending"), type("NE")
 {
     generate_crn();
     no_of_connections_requests++;
 }
 
-Mobile::Mobile(std::string name, unsigned int pincode, std::string aadhaar_no, std::string email, std::string_view connection_type, std::string mobile_no) : Customer(name, pincode, aadhaar_no, email), connection_type(connection_type), mobile_no(mobile_no), status("Pending"), type("PI"), iccid("")
+Mobile::Mobile(Customer& customer_info, std::string_view connection_type, std::string mobile_no) : Customer(customer_info), connection_type(connection_type), mobile_no(mobile_no), status("Pending"), type("PI")
 {
     verify_no();
     verify_upc();

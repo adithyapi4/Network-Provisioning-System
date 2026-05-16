@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "Customer.h"
 
 Customer::Customer(std::string name, unsigned int pincode, std::string aadhaar_no, std::string email) : name(name), pincode(pincode), aadhaar_no(aadhaar_no), email(email)

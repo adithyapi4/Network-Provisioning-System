@@ -1,18 +1,18 @@
-#include <iostream>
-#include "Customer.h"
+#ifndef MOBILE_H
+#define MOBILE_H
 
 class Mobile : public Customer
 {
     static int no_of_connections_requests;
-    std::string type;
-    std::string connection_type;
-    std::string mobile_no;
-    std::string status;
-    std::string iccid;
-    std::string upc;
-    std::string reason;
-    std::string crn;
-    int otp;
+    std::string type{};
+    std::string connection_type{};
+    std::string mobile_no{};
+    std::string status{};
+    std::string iccid{};
+    std::string upc{};
+    std::string reason{};
+    std::string crn{};
+    int otp{};
 
     friend void mobile_provisioning(Mobile&);
     friend std::ostream& operator << (std::ostream&,const Mobile&);
@@ -24,9 +24,9 @@ class Mobile : public Customer
 
     public:
 
-    Mobile(std::string name,unsigned int pincode,std::string aadhaar_no,std::string email,std::string_view connection_type);
+    Mobile(Customer& customer_info,std::string_view connection_type);
 
-    Mobile(std::string name,unsigned int pincode,std::string aadhaar_no,std::string email,std::string_view connection_type,std::string mobile_no);
+    Mobile(Customer& customer_info,std::string_view connection_type,std::string mobile_no);
 
     std::string get_status() const;
 
@@ -36,3 +36,5 @@ class Mobile : public Customer
 
     std::string get_crn() const;
 };
+
+#endif 
