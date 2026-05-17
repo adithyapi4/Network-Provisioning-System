@@ -14,10 +14,10 @@ extern char delimiter;
 static std::string return_prov_passwd()
 {
     std::string prov_passwd{};
-    std::fstream fpassword("prov.key",std::ios::in);
-    if(fpassword.is_open())
+    std::fstream fpassword("prov.key", std::ios::in);
+    if (fpassword.is_open())
     {
-        std::getline(fpassword,prov_passwd);
+        std::getline(fpassword, prov_passwd);
         return prov_passwd;
     }
     else
@@ -177,10 +177,10 @@ void payment_success_message(const std::vector<Mobile> &mobile_connections)
 static std::string return_key()
 {
     std::string key{};
-    std::fstream fkey("rw.key",std::ios::in);
-    if(fkey.is_open())
+    std::fstream fkey("rw.key", std::ios::in);
+    if (fkey.is_open())
     {
-        std::getline(fkey,key);
+        std::getline(fkey, key);
         return key;
     }
     else
@@ -197,9 +197,8 @@ static std::string hash_gen(const std::string &data)
     return std::to_string(hash);
 }
 
-static std::string xor_encrypt(const std::string &data)
+static std::string xor_encrypt(const std::string &data, const std::string &key)
 {
-    std::string key = return_key();
     std::string encrypted_data{};
     unsigned int i{0};
 
@@ -217,9 +216,8 @@ static std::string xor_encrypt(const std::string &data)
     return encrypted_data;
 }
 
-static std::string xor_decrypt(const std::string &encrypted_data)
+static std::string xor_decrypt(const std::string &encrypted_data, const std::string &key)
 {
-    std::string key = return_key();
     std::string data{};
     unsigned int i{0};
 
@@ -239,6 +237,7 @@ static std::string xor_decrypt(const std::string &encrypted_data)
 
 void write_to_file(const std::vector<Mobile> &mobile_connections)
 {
+    std::string key{return_key()};
     std::fstream fwrite;
     fwrite.open("connections.dat", std::ios::out);
     std::string data{};
@@ -246,12 +245,12 @@ void write_to_file(const std::vector<Mobile> &mobile_connections)
     if (fwrite.is_open())
     {
         std::cout << "Saving to file. Please wait... " << std::endl;
-        fwrite << hash_gen(return_key()) << std::endl;
+        fwrite << hash_gen(key) << std::endl;
 
         for (const Mobile &connection : mobile_connections)
         {
             data = connection.name + delimiter + connection.pincode + delimiter + connection.aadhaar_no + delimiter + connection.email + delimiter + connection.type + delimiter + connection.connection_type + delimiter + connection.mobile_no + delimiter + connection.status + delimiter + connection.iccid + delimiter + connection.reason + delimiter + connection.crn;
-            fwrite << xor_encrypt(data) << std::endl;
+            fwrite << xor_encrypt(data,key) << std::endl;
         }
 
         fwrite.close();
@@ -264,6 +263,7 @@ void write_to_file(const std::vector<Mobile> &mobile_connections)
 
 void read_from_file(std::vector<Mobile> &mobile_connections)
 {
+    std::string key{return_key()};
     std::fstream fread("connections.dat", std::ios::in);
     std::string hash{};
     std::string encrypted_data{};
@@ -274,7 +274,7 @@ void read_from_file(std::vector<Mobile> &mobile_connections)
     {
         std::cout << "Reading from file. Please wait... " << std::endl;
         std::getline(fread, hash);
-        if (hash != hash_gen(return_key()))
+        if (hash != hash_gen(key))
         {
             std::cout << "Key mismatch! Not loading data!!!" << std::endl;
             return;
@@ -282,7 +282,7 @@ void read_from_file(std::vector<Mobile> &mobile_connections)
 
         while (getline(fread, encrypted_data))
         {
-            data = xor_decrypt(encrypted_data);
+            data = xor_decrypt(encrypted_data, key);
             std::stringstream sdata(data);
 
             std::getline(sdata, name, delimiter);
