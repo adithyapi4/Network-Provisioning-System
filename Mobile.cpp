@@ -81,6 +81,18 @@ void Mobile::display_stats()
     std::cout << "\nNumber of rejected connection requests: " << no_of_rejected_requests << std::endl;
 }
 
+void Mobile::prov_increment()
+{
+    no_of_pending_requests--;
+    no_of_provisioned_requests++;
+}
+
+void Mobile::rej_increment()
+{
+    no_of_pending_requests--;
+    no_of_rejected_requests++;
+}
+
 void Mobile::verify_upc()
 {
     int check = 0;

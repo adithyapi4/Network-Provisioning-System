@@ -36,6 +36,8 @@ public:
     void set_reason(std::string_view r);
     void display_no() const;
     static void display_stats();
+    static void prov_increment();
+    static void rej_increment();
 };
 
 #endif

@@ -20,13 +20,12 @@ int main()
 
     while (1)
     {
+        BEGIN:
         std::cout << "\n--------AirConnect Provisioning System--------\n\n";
         std::cout << "1. Customer\n";
         std::cout << "2. Provisioner\n";
         std::cout << "3. Exit\n";
         std::cin >> option;
-        if (option == 3)
-            return 0;
 
         try
         {
@@ -201,6 +200,7 @@ int main()
                 {
                     while (1)
                     {
+                        std::cout << std::endl;
                         Mobile::display_stats();
                         std::cout << "----------------------------------\n";
                         std::cout << "1. View Pending Requests\n";
@@ -209,11 +209,6 @@ int main()
                         std::cout << "4. Exit\n";
                         std::cin >> option;
                         std::cout << std::endl;
-
-                        if (option == 4)
-                        {
-                            return 0;
-                        }
 
                         switch (option)
                         {
@@ -243,13 +238,17 @@ int main()
                                     {
                                     case 1:
                                         mobile_provisioning(connection);
+                                        Mobile::prov_increment();
+                                        std::cout << "Provisioned Successfully!" << std::endl;
                                         break;
 
                                     case 2:
                                         connection.set_status("Rejected");
                                         std::cout << "Enter the reason: ";
-                                        std::cin >> reason;
+                                        std::getline(std::cin >> std::ws, reason);
                                         connection.set_reason(reason);
+                                        Mobile::rej_increment();
+                                        std::cout << "Rejected!" << std::endl;
                                         break;
 
                                     default:
@@ -284,6 +283,9 @@ int main()
                             }
                             break;
 
+                        case 4:
+                            goto BEGIN;
+                            
                         default:
                             break;
                         }
@@ -294,6 +296,9 @@ int main()
                     std::cout << "Authentication failed!";
                 }
                 break;
+
+            case 3:
+                return 0;
 
             default:
                 std::cout << "Invalid choice";
