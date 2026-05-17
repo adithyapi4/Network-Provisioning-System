@@ -18,11 +18,12 @@ static std::string return_prov_passwd()
     if (!prov_passwd.empty())
         return prov_passwd;
 
-    std::ifstream fpasswd("rw.key");
+    std::ifstream fpasswd("prov.key");
     if (!fpasswd.is_open())
         throw "Provisioner password not found!";
 
     std::getline(fpasswd, prov_passwd);
+    fpasswd.close();
     return prov_passwd;
 }
 
@@ -186,6 +187,7 @@ static std::string return_key()
         throw "Key not found!";
 
     std::getline(fkey, key);
+    fkey.close();
     return key;
 }
 
@@ -239,8 +241,7 @@ static std::string xor_decrypt(const std::string &encrypted_data)
 
 void write_to_file(const std::vector<Mobile> &mobile_connections)
 {
-    std::fstream fwrite;
-    fwrite.open("connections.dat", std::ios::out);
+    std::ofstream fwrite("connections.dat");
     std::string data{};
 
     if (fwrite.is_open())
