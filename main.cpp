@@ -20,7 +20,7 @@ int main()
 
     while (1)
     {
-        std::cout << "--------AirConnect Provisioning System--------\n\n";
+        std::cout << "\n--------AirConnect Provisioning System--------\n\n";
         std::cout << "1. Customer\n";
         std::cout << "2. Provisioner\n";
         std::cout << "3. Exit\n";
@@ -61,7 +61,7 @@ int main()
                         case 1:
                             new_connection_prepaid(*new_customer, mobile_connections);
                             paid = make_payment(pay);
-                            paid ? payment_success_message : payment_failure_message;
+                            paid ? payment_success_message(mobile_connections) : payment_failure_message(mobile_connections);
                             delete pay;
                             pay = nullptr;
                             delete new_customer;
@@ -71,7 +71,7 @@ int main()
                         case 2:
                             port_in_prepaid(*new_customer, mobile_connections);
                             paid = make_payment(pay);
-                            paid ? payment_success_message : payment_failure_message;
+                            paid ? payment_success_message(mobile_connections) : payment_failure_message(mobile_connections);
                             delete pay;
                             pay = nullptr;
                             delete new_customer;
@@ -98,7 +98,7 @@ int main()
                         case 1:
                             new_connection_postpaid(*new_customer, mobile_connections);
                             paid = make_payment(pay);
-                            paid ? payment_success_message : payment_failure_message;
+                            paid ? payment_success_message(mobile_connections) : payment_failure_message(mobile_connections);
                             delete pay;
                             pay = nullptr;
                             delete new_customer;
@@ -108,7 +108,7 @@ int main()
                         case 2:
                             port_in_postpaid(*new_customer, mobile_connections);
                             paid = make_payment(pay);
-                            paid ? payment_success_message : payment_failure_message;
+                            paid ? payment_success_message(mobile_connections) : payment_failure_message(mobile_connections);
                             delete pay;
                             pay = nullptr;
                             delete new_customer;

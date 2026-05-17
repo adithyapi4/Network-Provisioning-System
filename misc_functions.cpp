@@ -120,7 +120,7 @@ bool make_payment(Payment *&pay)
         pay->get_payment_details();
         if (pay->make_payment() == false)
         {
-            std::cout << "Invalid card details";
+            std::cout << "Invalid card details" << std::endl;
             return false;
         }
         else

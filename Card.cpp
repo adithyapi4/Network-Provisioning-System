@@ -14,7 +14,7 @@ void Card::get_payment_details()
     std::cout << "Enter the expiry: ";
     std::cin >> expiry;
     std::cout << "Enter card holder's name: ";
-    std::cin >> card_holder_name;
+    std::getline(std::cin >> std::ws, card_holder_name);
 
     validate_card_details();
 }
@@ -112,8 +112,12 @@ bool Card::make_payment()
     }
 
     std::cout << "Enter the CVV: ";
-    std::cin >> std::ws;
     std::cin >> cvv;
+    if (!(cvv > 99 && cvv < 10000))
+    {
+        std::cout << "Invalid CVV!" << std::endl;
+        return false;
+    }
 
     std::cout << "Please wait while we process your transaction..." << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(2));
