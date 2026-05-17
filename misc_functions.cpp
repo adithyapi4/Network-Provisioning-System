@@ -265,7 +265,7 @@ void write_to_file(const std::vector<Mobile> &mobile_connections)
 
 void read_from_file(std::vector<Mobile> &mobile_connections)
 {
-    std::fstream fread("connections.dat", std::ios::in);
+    std::ifstream fread("connections.dat");
     std::string hash{};
     std::string encrypted_data{};
     std::string data{};

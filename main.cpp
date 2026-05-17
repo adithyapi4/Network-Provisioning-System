@@ -325,6 +325,7 @@ int main()
         }
         catch (const char *msg)
         {
+            std::cin.clear();
             std::cout << msg << std::endl;
         }
     }
