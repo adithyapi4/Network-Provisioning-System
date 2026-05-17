@@ -180,7 +180,6 @@ std::string xor_encrypt(const std::string &data)
 void write_to_file(const std::vector<Mobile> &mobile_connections)
 {
     std::cout << "Saving to file. Please wait... " << std::endl;
-    char delimiter{'|'};
     std::fstream fwrite;
     fwrite.open("connections.dat", std::ios::out);
     unsigned int i{0};

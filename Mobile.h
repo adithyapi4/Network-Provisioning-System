@@ -29,8 +29,8 @@ class Mobile : public Customer
     void generate_mobile_no();
 
 public:
-    Mobile(Customer &customer_info, std::string_view c_type);
-    Mobile(Customer &customer_info, std::string_view c_type, std::string m_no);
+    Mobile(const Customer &customer_info, std::string_view c_type);
+    Mobile(const Customer &customer_info, std::string_view c_type, std::string m_no);
     Mobile(std::string name,unsigned int pincode,std::string aadhaar,std::string email,std::string type,std::string c_type,std::string m_no,std::string status,std::string iccid,std::string reason,std::string crn);
     std::string get_status() const;
     void set_status(std::string_view s);

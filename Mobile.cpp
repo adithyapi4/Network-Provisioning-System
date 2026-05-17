@@ -10,14 +10,14 @@ unsigned int Mobile::no_of_pending_requests = 0;
 unsigned int Mobile::no_of_provisioned_requests = 0;
 unsigned int Mobile::no_of_rejected_requests = 0;
 
-Mobile::Mobile(Customer &customer_info, std::string_view c_type) : Customer(customer_info), type("NE"), connection_type(c_type), status("Pending")
+Mobile::Mobile(const Customer &customer_info, std::string_view c_type) : Customer(customer_info), type("NE"), connection_type(c_type), status("Pending")
 {
     generate_crn();
     total_no_of_connections_requests++;
     no_of_pending_requests++;
 }
 
-Mobile::Mobile(Customer &customer_info, std::string_view c_type, std::string m_no) : Customer(customer_info), type("PI"), connection_type(c_type), mobile_no(m_no), status("Pending")
+Mobile::Mobile(const Customer &customer_info, std::string_view c_type, std::string m_no) : Customer(customer_info), type("PI"), connection_type(c_type), mobile_no(m_no), status("Pending")
 {
     verify_no();
     verify_upc();
