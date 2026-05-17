@@ -156,7 +156,7 @@ void payment_success_message(const std::vector<Mobile> &mobile_connections)
 
 std::string return_key()
 {
-    std::string key = "deez2Zahwu8iela2dai1";
+    std::string key = "my_key";
     return key;
 }
 
