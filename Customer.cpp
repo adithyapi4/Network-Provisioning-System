@@ -9,7 +9,7 @@ Customer::Customer(const std::string &name, const std::string &pincode, const st
     {
         throw "Invalid Aadhaar number!";
     }
-    if (pincode.size() != 6)
+    if (pincode.size() != 6 || !std::all_of(pincode.begin(), pincode.end(), ::isdigit))
     {
         throw "Invalid Pincode!";
     }

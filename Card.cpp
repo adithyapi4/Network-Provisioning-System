@@ -21,6 +21,7 @@ void Card::get_payment_details()
 
 void Card::validate_card_details()
 {
+    validity = true;
     int i{};
     unsigned int card_no_sum{};
     int card_no_int[20];
@@ -77,6 +78,7 @@ void Card::validate_card_details()
         if (!((digit >= 0) && (digit <= 9)))
         {
             validity = false;
+            return;
         }
         card_no_int[i++] = digit;
     }

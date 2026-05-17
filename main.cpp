@@ -18,9 +18,16 @@ int main()
     bool paid{};
     bool search{};
     std::string crn;
-    unsigned int option;
+    unsigned int option{};
 
-    read_from_file(mobile_connections);
+    try
+    {
+        read_from_file(mobile_connections);
+    }
+    catch (std::string msg)
+    {
+        std::cout << msg << " Error reading from file!!!" << std::endl;
+    }
 
     while (1)
     {
@@ -302,7 +309,14 @@ int main()
                 break;
 
             case 3:
-                write_to_file(mobile_connections);
+                try
+                {
+                    write_to_file(mobile_connections);
+                }
+                catch (std::string msg)
+                {
+                    std::cout << msg << " Error writing to file!!!" << std::endl;
+                }
                 return 0;
 
             default:
@@ -312,7 +326,6 @@ int main()
         catch (const char *msg)
         {
             std::cout << msg << std::endl;
-            write_to_file(mobile_connections);
         }
     }
     return 0;

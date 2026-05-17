@@ -11,12 +11,9 @@ void port_in_postpaid(const Customer &new_customer, std::vector<Mobile> &mobile_
 bool make_payment(Payment *&pay);
 void payment_failure_message(std::vector<Mobile> &mobile_connections);
 void payment_success_message(const std::vector<Mobile> &mobile_connections);
-std::string xor_encrypt(const std::string &data);
-std::string xor_decrypt(const std::string &encrypted_data);
 void read_from_file(std::vector<Mobile> &mobile_connections);
 void write_to_file(const std::vector<Mobile> &mobile_connections);
 void mobile_provisioning(Mobile &);
 std::ostream &operator<<(std::ostream &, const Mobile &);
-std::string hash_gen(const std::string &data);
 
 #endif

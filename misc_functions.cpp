@@ -13,8 +13,17 @@ extern char delimiter;
 
 static std::string return_prov_passwd()
 {
-    std::string prov_passwd = "mypassword@123";
-    return prov_passwd;
+    std::string prov_passwd{};
+    std::fstream fpassword("prov.key",std::ios::in);
+    if(fpassword.is_open())
+    {
+        std::getline(fpassword,prov_passwd);
+        return prov_passwd;
+    }
+    else
+    {
+        throw "Provisioner password not found!";
+    }
 }
 
 bool verify_prov_id()
@@ -167,11 +176,20 @@ void payment_success_message(const std::vector<Mobile> &mobile_connections)
 
 static std::string return_key()
 {
-    std::string key = "my_key";
-    return key;
+    std::string key{};
+    std::fstream fkey("rw.key",std::ios::in);
+    if(fkey.is_open())
+    {
+        std::getline(fkey,key);
+        return key;
+    }
+    else
+    {
+        throw "Key not found!";
+    }
 }
 
-std::string hash_gen(const std::string &data)
+static std::string hash_gen(const std::string &data)
 {
     unsigned long hash = 5381;
     for (char c : data)
@@ -179,7 +197,7 @@ std::string hash_gen(const std::string &data)
     return std::to_string(hash);
 }
 
-std::string xor_encrypt(const std::string &data)
+static std::string xor_encrypt(const std::string &data)
 {
     std::string key = return_key();
     std::string encrypted_data{};
@@ -199,15 +217,35 @@ std::string xor_encrypt(const std::string &data)
     return encrypted_data;
 }
 
+static std::string xor_decrypt(const std::string &encrypted_data)
+{
+    std::string key = return_key();
+    std::string data{};
+    unsigned int i{0};
+
+    for (char c : encrypted_data)
+    {
+        if (c == delimiter)
+        {
+            data += delimiter;
+            continue;
+        }
+        data += c ^ key[i % key.size()];
+        i++;
+    }
+
+    return data;
+}
+
 void write_to_file(const std::vector<Mobile> &mobile_connections)
 {
-    std::cout << "Saving to file. Please wait... " << std::endl;
     std::fstream fwrite;
     fwrite.open("connections.dat", std::ios::out);
     std::string data{};
 
     if (fwrite.is_open())
     {
+        std::cout << "Saving to file. Please wait... " << std::endl;
         fwrite << hash_gen(return_key()) << std::endl;
 
         for (const Mobile &connection : mobile_connections)
@@ -226,7 +264,6 @@ void write_to_file(const std::vector<Mobile> &mobile_connections)
 
 void read_from_file(std::vector<Mobile> &mobile_connections)
 {
-    std::cout << "Reading from file. Please wait... " << std::endl;
     std::fstream fread("connections.dat", std::ios::in);
     std::string hash{};
     std::string encrypted_data{};
@@ -235,6 +272,7 @@ void read_from_file(std::vector<Mobile> &mobile_connections)
 
     if (fread.is_open())
     {
+        std::cout << "Reading from file. Please wait... " << std::endl;
         std::getline(fread, hash);
         if (hash != hash_gen(return_key()))
         {
@@ -261,29 +299,11 @@ void read_from_file(std::vector<Mobile> &mobile_connections)
 
             mobile_connections.emplace_back(name, pincode, aadhaar, email, type, connection_type, mobile_no, status, iccid, reason, crn);
         }
+
+        fread.close();
     }
     else
     {
         std::cout << "Error reading from file!" << std::endl;
     }
-}
-
-std::string xor_decrypt(const std::string &encrypted_data)
-{
-    std::string key = return_key();
-    std::string data{};
-    unsigned int i{0};
-
-    for (char c : encrypted_data)
-    {
-        if (c == delimiter)
-        {
-            data += delimiter;
-            continue;
-        }
-        data += c ^ key[i % key.size()];
-        i++;
-    }
-
-    return data;
 }
