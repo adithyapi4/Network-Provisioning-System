@@ -11,7 +11,7 @@
 
 extern char delimiter;
 
-inline std::string return_prov_passwd()
+static std::string return_prov_passwd()
 {
     std::string prov_passwd = "mypassword@123";
     return prov_passwd;
@@ -91,12 +91,12 @@ void get_customer_details(Customer *&new_customer)
     new_customer = new Customer(name, pincode, aadhaar, email);
 }
 
-inline void new_connection_prepaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
+void new_connection_prepaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
 {
     mobile_connections.emplace_back(new_customer, "PR");
 }
 
-inline void port_in_prepaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
+void port_in_prepaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
 {
     std::string phone_no;
 
@@ -106,12 +106,12 @@ inline void port_in_prepaid(const Customer &new_customer, std::vector<Mobile> &m
     mobile_connections.emplace_back(new_customer, "PR", phone_no);
 }
 
-inline void new_connection_postpaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
+void new_connection_postpaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
 {
     mobile_connections.emplace_back(new_customer, "PO");
 }
 
-inline void port_in_postpaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
+void port_in_postpaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
 {
     std::string phone_no;
 
@@ -150,7 +150,7 @@ bool make_payment(Payment *&pay)
     }
 }
 
-inline void payment_failure_message(std::vector<Mobile> &mobile_connections)
+void payment_failure_message(std::vector<Mobile> &mobile_connections)
 {
     std::cout << "Transaction Failed! Your request will be submitted only upon successful payment\n";
     std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
@@ -158,14 +158,14 @@ inline void payment_failure_message(std::vector<Mobile> &mobile_connections)
     mobile_connections.back().set_reason("Payment failed");
 }
 
-inline void payment_success_message(const std::vector<Mobile> &mobile_connections)
+void payment_success_message(const std::vector<Mobile> &mobile_connections)
 {
     std::cout << "Connection request placed successfully!\n";
     std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
     std::cout << "To track your connection request use the given CRN" << std::endl;
 }
 
-inline std::string return_key()
+static std::string return_key()
 {
     std::string key = "my_key";
     return key;

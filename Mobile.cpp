@@ -10,14 +10,14 @@ unsigned int Mobile::no_of_pending_requests = 0;
 unsigned int Mobile::no_of_provisioned_requests = 0;
 unsigned int Mobile::no_of_rejected_requests = 0;
 
-Mobile::Mobile(const Customer &customer_info, const std::string_view &c_type) : Customer(customer_info), type("NE"), connection_type(c_type), status("Pending")
+Mobile::Mobile(const Customer &customer_info, const std::string_view c_type) : Customer(customer_info), type("NE"), connection_type(c_type), status("Pending")
 {
     generate_crn();
     total_no_of_connections_requests++;
     no_of_pending_requests++;
 }
 
-Mobile::Mobile(const Customer &customer_info, const std::string_view &c_type, const std::string &m_no) : Customer(customer_info), type("PI"), connection_type(c_type), mobile_no(m_no), status("Pending")
+Mobile::Mobile(const Customer &customer_info, const std::string_view c_type, const std::string &m_no) : Customer(customer_info), type("PI"), connection_type(c_type), mobile_no(m_no), status("Pending")
 {
     verify_no();
     verify_upc();
@@ -43,26 +43,6 @@ Mobile::Mobile(const std::string &name, const std::string &pincode, const std::s
     }
 }
 
-inline std::string Mobile::get_status() const
-{
-    return status;
-}
-
-inline void Mobile::set_status(std::string_view s)
-{
-    status = s;
-}
-
-inline std::string Mobile::get_reason() const
-{
-    return reason;
-}
-
-inline void Mobile::set_reason(std::string_view r)
-{
-    reason = r;
-}
-
 void Mobile::verify_no()
 {
     int otp;
@@ -75,27 +55,22 @@ void Mobile::verify_no()
     std::cout << "Verified Successfully" << std::endl;
 }
 
-inline void Mobile::generate_crn()
+void Mobile::generate_crn()
 {
     crn = type + connection_type + aadhaar_no.substr(8) + pincode.substr(1);
 }
 
-inline std::string Mobile::get_crn() const
-{
-    return crn;
-}
-
-inline void Mobile::generate_mobile_no()
+void Mobile::generate_mobile_no()
 {
     mobile_no = "93" + aadhaar_no.substr(8) + pincode.substr(2);
 }
 
-inline void Mobile::display_no() const
+void Mobile::display_no() const
 {
     std::cout << "Mobile Number: " << mobile_no << std::endl;
 }
 
-inline void Mobile::display_stats()
+void Mobile::display_stats()
 {
     std::cout << "Total number of connection requests: " << total_no_of_connections_requests;
     std::cout << "\nNumber of pending connection requests: " << no_of_pending_requests;

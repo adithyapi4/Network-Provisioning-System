@@ -28,14 +28,14 @@ class Mobile : public Customer
     void generate_mobile_no();
 
 public:
-    Mobile(const Customer &customer_info, const std::string_view &c_type);
-    Mobile(const Customer &customer_info, const std::string_view &c_type, const std::string &m_no);
+    Mobile(const Customer &customer_info, const std::string_view c_type);
+    Mobile(const Customer &customer_info, const std::string_view c_type, const std::string &m_no);
     Mobile(const std::string &name, const std::string &pincode, const std::string &aadhaar, const std::string &email, const std::string &type, const std::string &c_type, const std::string &m_no, const std::string &status, const std::string &iccid, const std::string &reason, const std::string &crn);
-    std::string get_status() const;
-    void set_status(std::string_view s);
-    std::string get_crn() const;
-    std::string get_reason() const;
-    void set_reason(std::string_view r);
+    std::string get_status() const { return status; }
+    void set_status(std::string_view s) { status = s; }
+    std::string get_crn() const { return crn; }
+    std::string get_reason() const { return reason; }
+    void set_reason(std::string_view r) { reason = r; }
     void display_no() const;
     static void display_stats();
     static void prov_increment();
