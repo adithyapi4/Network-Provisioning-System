@@ -7,7 +7,7 @@ class Card : public Payment
     std::string expiry{};
     std::string card_holder_name{};
     unsigned int cvv{};
-    bool validity{false};
+    bool validity{true};
 
     void validate_card_details();
 

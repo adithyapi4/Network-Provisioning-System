@@ -11,18 +11,30 @@
 
 extern char delimiter;
 
-int verify_prov_id()
+inline std::string return_prov_passwd()
 {
-    int otp;
+    std::string prov_passwd = "mypassword@123";
+    return prov_passwd;
+}
+
+bool verify_prov_id()
+{
+    std::string password{};
     std::string prov_id;
     std::cout << "Enter your provisioner ID: ";
     std::cin >> prov_id;
 
-    std::cout << "Enter the OTP sent to your registered mobile number: ";
-    std::cin >> otp;
-
-    std::cout << "Validated" << std::endl;
-    return 0;
+    std::cout << "Enter your password: ";
+    std::cin >> password;
+    if (password == return_prov_passwd())
+    {
+        std::cout << "Validated" << std::endl;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void mobile_provisioning(Mobile &connection)
@@ -62,7 +74,7 @@ std::ostream &operator<<(std::ostream &out, const Mobile &sr)
 void get_customer_details(Customer *&new_customer)
 {
     std::string name;
-    unsigned int pincode;
+    std::string pincode;
     std::string aadhaar;
     std::string email;
 
@@ -79,12 +91,12 @@ void get_customer_details(Customer *&new_customer)
     new_customer = new Customer(name, pincode, aadhaar, email);
 }
 
-void new_connection_prepaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
+inline void new_connection_prepaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
 {
     mobile_connections.emplace_back(new_customer, "PR");
 }
 
-void port_in_prepaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
+inline void port_in_prepaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
 {
     std::string phone_no;
 
@@ -94,12 +106,12 @@ void port_in_prepaid(const Customer &new_customer, std::vector<Mobile> &mobile_c
     mobile_connections.emplace_back(new_customer, "PR", phone_no);
 }
 
-void new_connection_postpaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
+inline void new_connection_postpaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
 {
     mobile_connections.emplace_back(new_customer, "PO");
 }
 
-void port_in_postpaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
+inline void port_in_postpaid(const Customer &new_customer, std::vector<Mobile> &mobile_connections)
 {
     std::string phone_no;
 
@@ -122,16 +134,15 @@ bool make_payment(Payment *&pay)
     case 1:
         pay = new Card;
         pay->get_payment_details();
-        if (pay->make_payment() == false)
+        if (pay->make_payment() == true)
+        {
+            return true;
+        }
+        else
         {
             std::cout << "Invalid card details" << std::endl;
             return false;
         }
-        else
-        {
-            return true;
-        }
-        break;
 
     default:
         std::cout << "Invalid choice!";
@@ -139,7 +150,7 @@ bool make_payment(Payment *&pay)
     }
 }
 
-void payment_failure_message(std::vector<Mobile> &mobile_connections)
+inline void payment_failure_message(std::vector<Mobile> &mobile_connections)
 {
     std::cout << "Transaction Failed! Your request will be submitted only upon successful payment\n";
     std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
@@ -147,21 +158,30 @@ void payment_failure_message(std::vector<Mobile> &mobile_connections)
     mobile_connections.back().set_reason("Payment failed");
 }
 
-void payment_success_message(const std::vector<Mobile> &mobile_connections)
+inline void payment_success_message(const std::vector<Mobile> &mobile_connections)
 {
     std::cout << "Connection request placed successfully!\n";
     std::cout << "CRN: " << mobile_connections.back().get_crn() << std::endl;
     std::cout << "To track your connection request use the given CRN" << std::endl;
 }
 
-std::string return_key()
+inline std::string return_key()
 {
     std::string key = "my_key";
     return key;
 }
 
+std::string hash_gen(const std::string &data)
+{
+    unsigned long hash = 5381;
+    for (char c : data)
+        hash = ((hash << 5) + hash) + c;
+    return std::to_string(hash);
+}
+
 std::string xor_encrypt(const std::string &data)
 {
+    std::string key = return_key();
     std::string encrypted_data{};
     unsigned int i{0};
 
@@ -170,8 +190,10 @@ std::string xor_encrypt(const std::string &data)
         if (c == delimiter)
         {
             encrypted_data += delimiter;
+            continue;
         }
-        encrypted_data += c ^ return_key()[i % return_key().size()];
+        encrypted_data += c ^ key[i % key.size()];
+        i++;
     }
 
     return encrypted_data;
@@ -182,25 +204,15 @@ void write_to_file(const std::vector<Mobile> &mobile_connections)
     std::cout << "Saving to file. Please wait... " << std::endl;
     std::fstream fwrite;
     fwrite.open("connections.dat", std::ios::out);
-    unsigned int i{0};
     std::string data{};
-    std::string encrypted_key{};
 
     if (fwrite.is_open())
     {
-        for (int k : return_key())
-        {
-            int add{};
-            add = (i % 2 == 0) ? 6 : -6;
-
-            encrypted_key += static_cast<char>(k + add);
-            i++;
-        }
-        fwrite << encrypted_key << std::endl;
+        fwrite << hash_gen(return_key()) << std::endl;
 
         for (const Mobile &connection : mobile_connections)
         {
-            data = connection.name + delimiter + std::to_string(connection.pincode) + delimiter + connection.aadhaar_no + delimiter + connection.email + delimiter + connection.type + delimiter + connection.connection_type + delimiter + connection.mobile_no + delimiter + connection.status + delimiter + connection.iccid + delimiter + connection.reason + delimiter + connection.crn;
+            data = connection.name + delimiter + connection.pincode + delimiter + connection.aadhaar_no + delimiter + connection.email + delimiter + connection.type + delimiter + connection.connection_type + delimiter + connection.mobile_no + delimiter + connection.status + delimiter + connection.iccid + delimiter + connection.reason + delimiter + connection.crn;
             fwrite << xor_encrypt(data) << std::endl;
         }
 
@@ -215,52 +227,39 @@ void write_to_file(const std::vector<Mobile> &mobile_connections)
 void read_from_file(std::vector<Mobile> &mobile_connections)
 {
     std::cout << "Reading from file. Please wait... " << std::endl;
-    std::fstream fread("connections.dat",std::ios::in);
-    std::string decrypted_key{};
+    std::fstream fread("connections.dat", std::ios::in);
+    std::string hash{};
     std::string encrypted_data{};
     std::string data{};
-    std::string encrypted_key{};
-    std::string name,str_pincode,aadhaar,email,type,connection_type,mobile_no,status,iccid,reason,crn;
-    std::getline(fread,encrypted_key);
-    unsigned int i{0};
-    unsigned int pincode{};
+    std::string name, pincode, aadhaar, email, type, connection_type, mobile_no, status, iccid, reason, crn;
 
-    if(fread.is_open())
+    if (fread.is_open())
     {
-        for (int k : encrypted_key)
-        {
-            int add{};
-            add = (i % 2 == 0) ? 6 : -6;
-
-            decrypted_key += static_cast<char>(k - add);
-            i++;
-        }
-        if(decrypted_key != return_key())
+        std::getline(fread, hash);
+        if (hash != hash_gen(return_key()))
         {
             std::cout << "Key mismatch! Not loading data!!!" << std::endl;
             return;
         }
 
-        while(getline(fread,encrypted_data))
+        while (getline(fread, encrypted_data))
         {
             data = xor_decrypt(encrypted_data);
             std::stringstream sdata(data);
 
-            std::getline(sdata,name,delimiter);
-            std::getline(sdata,str_pincode,delimiter);
-            std::getline(sdata,aadhaar,delimiter);
-            std::getline(sdata,email,delimiter);
-            std::getline(sdata,type,delimiter);
-            std::getline(sdata,connection_type,delimiter);
-            std::getline(sdata,mobile_no,delimiter);
-            std::getline(sdata,status,delimiter);
-            std::getline(sdata,iccid,delimiter);
-            std::getline(sdata,reason,delimiter);
-            std::getline(sdata,crn,delimiter);
+            std::getline(sdata, name, delimiter);
+            std::getline(sdata, pincode, delimiter);
+            std::getline(sdata, aadhaar, delimiter);
+            std::getline(sdata, email, delimiter);
+            std::getline(sdata, type, delimiter);
+            std::getline(sdata, connection_type, delimiter);
+            std::getline(sdata, mobile_no, delimiter);
+            std::getline(sdata, status, delimiter);
+            std::getline(sdata, iccid, delimiter);
+            std::getline(sdata, reason, delimiter);
+            std::getline(sdata, crn, delimiter);
 
-            pincode = (str_pincode[0] * 100000) + (str_pincode[1] * 10000) + (str_pincode[2] * 1000) + (str_pincode[3] * 100) + (str_pincode[4] * 10) + (str_pincode[5]);
-
-            mobile_connections.emplace_back(name,pincode,aadhaar,email,type,connection_type,mobile_no,status,iccid,reason,crn);
+            mobile_connections.emplace_back(name, pincode, aadhaar, email, type, connection_type, mobile_no, status, iccid, reason, crn);
         }
     }
     else
@@ -271,6 +270,7 @@ void read_from_file(std::vector<Mobile> &mobile_connections)
 
 std::string xor_decrypt(const std::string &encrypted_data)
 {
+    std::string key = return_key();
     std::string data{};
     unsigned int i{0};
 
@@ -279,8 +279,10 @@ std::string xor_decrypt(const std::string &encrypted_data)
         if (c == delimiter)
         {
             data += delimiter;
+            continue;
         }
-        data += c ^ return_key()[i % return_key().size()];
+        data += c ^ key[i % key.size()];
+        i++;
     }
 
     return data;

@@ -24,7 +24,7 @@ int main()
 
     while (1)
     {
-        BEGIN:
+    BEGIN:
         std::cout << "\n--------AirConnect Provisioning System--------\n\n";
         std::cout << "1. Customer\n";
         std::cout << "2. Provisioner\n";
@@ -37,7 +37,7 @@ int main()
             {
             case 1:
                 std::cout << "\n1. New connection request\n";
-                std::cout << "2. Track exisitng connection request\n";
+                std::cout << "2. Track exisiting connection request\n";
                 std::cin >> option;
                 std::cout << std::endl;
 
@@ -200,7 +200,7 @@ int main()
                 break;
 
             case 2:
-                if (verify_prov_id() == 0)
+                if (verify_prov_id())
                 {
                     while (1)
                     {
@@ -289,7 +289,7 @@ int main()
 
                         case 4:
                             goto BEGIN;
-                            
+
                         default:
                             break;
                         }
@@ -312,6 +312,7 @@ int main()
         catch (const char *msg)
         {
             std::cout << msg << std::endl;
+            write_to_file(mobile_connections);
         }
     }
     return 0;

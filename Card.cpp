@@ -33,11 +33,13 @@ void Card::validate_card_details()
     if ((card_no.length() > 19) || (card_no.length() < 12))
     {
         validity = false;
+        return;
     }
 
     if (expiry.length() != 5 || expiry[2] != '/')
     {
         validity = false;
+        return;
     }
 
     int card_MM = ((expiry[0] - '0') * 10) + (expiry[1] - '0');
@@ -46,11 +48,13 @@ void Card::validate_card_details()
     if (!((card_MM > 0) && (card_MM < 13)))
     {
         validity = false;
+        return;
     }
 
     if (!((card_YY >= 0) && (card_YY < 100)))
     {
         validity = false;
+        return;
     }
 
     if (card_YY == YY)
@@ -58,15 +62,13 @@ void Card::validate_card_details()
         if (card_MM < MM)
         {
             validity = false;
+            return;
         }
     }
     else if (card_YY < YY)
     {
         validity = false;
-    }
-    else
-    {
-        validity = true;
+        return;
     }
 
     for (char c : card_no)
@@ -97,10 +99,7 @@ void Card::validate_card_details()
     if ((card_no_sum % 10) != 0)
     {
         validity = false;
-    }
-    else
-    {
-        validity = true;
+        return;
     }
 }
 

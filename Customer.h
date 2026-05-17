@@ -4,13 +4,12 @@ class Customer
 {
 protected:
     std::string name{};
-    unsigned int pincode{};
+    std::string pincode{};
     std::string aadhaar_no{};
     std::string email{};
-    int otp{};
 
 public:
-    Customer(std::string name, unsigned int pincode, std::string aadhaar_no, std::string email);
+    Customer(const std::string &name, const std::string &pincode, const std::string &aadhaar_no, const std::string &email);
 
 private:
     void verify_email();
