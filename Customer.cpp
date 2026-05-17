@@ -4,6 +4,14 @@
 
 Customer::Customer(std::string name, unsigned int pincode, std::string aadhaar_no, std::string email) : name(name), pincode(pincode), aadhaar_no(aadhaar_no), email(email)
 {
+    if(aadhaar_no.size() != 12)
+    {
+        throw "Invalid Aadhaar number!";
+    }
+    if(std::to_string(pincode).size() != 6)
+    {
+        throw "Invalid Pincode!";
+    }
     verify_email();
 }
 

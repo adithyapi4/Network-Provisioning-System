@@ -112,6 +112,7 @@ bool Card::make_payment()
     }
 
     std::cout << "Enter the CVV: ";
+    std::cin >> std::ws;
     std::cin >> cvv;
 
     std::cout << "Please wait while we process your transaction..." << std::endl;
