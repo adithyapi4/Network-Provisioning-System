@@ -24,7 +24,7 @@ int main()
     {
         read_from_file(mobile_connections);
     }
-    catch (std::string msg)
+    catch (const char* msg)
     {
         std::cout << msg << " Error reading from file!!!" << std::endl;
     }
@@ -313,7 +313,7 @@ int main()
                 {
                     write_to_file(mobile_connections);
                 }
-                catch (std::string msg)
+                catch (const char* msg)
                 {
                     std::cout << msg << " Error writing to file!!!" << std::endl;
                 }
