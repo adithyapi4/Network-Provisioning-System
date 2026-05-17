@@ -7,7 +7,6 @@ protected:
     unsigned int pincode{};
     std::string aadhaar_no{};
     std::string email{};
-    std::string status{};
     int otp{};
 
 public:

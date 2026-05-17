@@ -10,20 +10,37 @@ unsigned int Mobile::no_of_pending_requests = 0;
 unsigned int Mobile::no_of_provisioned_requests = 0;
 unsigned int Mobile::no_of_rejected_requests = 0;
 
-Mobile::Mobile(Customer &customer_info, std::string_view connection_type) : Customer(customer_info), type("NE"), connection_type(connection_type), status("Pending")
+Mobile::Mobile(Customer &customer_info, std::string_view c_type) : Customer(customer_info), type("NE"), connection_type(c_type), status("Pending")
 {
     generate_crn();
     total_no_of_connections_requests++;
     no_of_pending_requests++;
 }
 
-Mobile::Mobile(Customer &customer_info, std::string_view connection_type, std::string mobile_no) : Customer(customer_info), type("PI"), connection_type(connection_type), mobile_no(mobile_no), status("Pending")
+Mobile::Mobile(Customer &customer_info, std::string_view c_type, std::string m_no) : Customer(customer_info), type("PI"), connection_type(c_type), mobile_no(m_no), status("Pending")
 {
     verify_no();
     verify_upc();
     generate_crn();
     total_no_of_connections_requests++;
     no_of_pending_requests++;
+}
+
+Mobile::Mobile(std::string name,unsigned int pincode,std::string aadhaar,std::string email,std::string type,std::string c_type,std::string m_no,std::string status,std::string iccid,std::string reason,std::string crn) : Customer(name,pincode,aadhaar,email),type(type),connection_type(c_type),mobile_no(m_no),status(status),iccid(iccid),reason(reason),crn(crn)
+{
+    total_no_of_connections_requests++;
+    if(status == "Pending")
+    {
+        no_of_pending_requests++;
+    }
+    else if(status == "Provisioned")
+    {
+        no_of_provisioned_requests++;
+    }
+    else if(status == "Rejected")
+    {
+        no_of_rejected_requests++;
+    }
 }
 
 std::string Mobile::get_status() const

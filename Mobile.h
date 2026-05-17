@@ -1,3 +1,4 @@
+#include <vector>
 #ifndef MOBILE_H
 #define MOBILE_H
 
@@ -18,6 +19,7 @@ class Mobile : public Customer
     std::string crn{};
     int otp{};
 
+    friend void write_to_file(const std::vector<Mobile> &mobile_connections);
     friend void mobile_provisioning(Mobile &);
     friend std::ostream &operator<<(std::ostream &, const Mobile &);
 
@@ -27,8 +29,9 @@ class Mobile : public Customer
     void generate_mobile_no();
 
 public:
-    Mobile(Customer &customer_info, std::string_view connection_type);
-    Mobile(Customer &customer_info, std::string_view connection_type, std::string mobile_no);
+    Mobile(Customer &customer_info, std::string_view c_type);
+    Mobile(Customer &customer_info, std::string_view c_type, std::string m_no);
+    Mobile(std::string name,unsigned int pincode,std::string aadhaar,std::string email,std::string type,std::string c_type,std::string m_no,std::string status,std::string iccid,std::string reason,std::string crn);
     std::string get_status() const;
     void set_status(std::string_view s);
     std::string get_crn() const;

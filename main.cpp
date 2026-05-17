@@ -8,6 +8,8 @@
 #include "Card.h"
 #include "misc_functions.h"
 
+char delimiter = '|';
+
 int main()
 {
     Customer *new_customer{};
@@ -17,6 +19,8 @@ int main()
     bool search{};
     std::string crn;
     unsigned int option;
+
+    read_from_file(mobile_connections);
 
     while (1)
     {
@@ -298,6 +302,7 @@ int main()
                 break;
 
             case 3:
+                write_to_file(mobile_connections);
                 return 0;
 
             default:
