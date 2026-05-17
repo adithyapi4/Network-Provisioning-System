@@ -13,17 +13,17 @@ extern char delimiter;
 
 static std::string return_prov_passwd()
 {
-    std::string prov_passwd{};
-    std::fstream fpassword("prov.key", std::ios::in);
-    if (fpassword.is_open())
-    {
-        std::getline(fpassword, prov_passwd);
+    static std::string prov_passwd{};
+
+    if (!prov_passwd.empty())
         return prov_passwd;
-    }
-    else
-    {
+
+    std::ifstream fpasswd("rw.key");
+    if (!fpasswd.is_open())
         throw "Provisioner password not found!";
-    }
+
+    std::getline(fpasswd, prov_passwd);
+    return prov_passwd;
 }
 
 bool verify_prov_id()
